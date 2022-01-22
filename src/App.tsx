@@ -1,17 +1,44 @@
+import liff from "@line/liff/dist/lib";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import "./App.css";
 import { ReactLogo, TrashLogo } from "./Svg";
+
+// id VARCHAR(36) NOT NULL PRIMARY KEY,
+// user_id VARCHAR(36) NOT NULL,
+// title VARCHAR(200) NOT NULL,
+// content VARCHAR(200) NOT NULL,
+// finished BOOLEAN NOT NULL,
+// created_at TIMESTAMP NOT NULL,
+// updated_at TIMESTAMP NOT NULL
 
 type Todo = {
   Id: string;
-  Todo: string;
-  Created: string;
-  Updated: string;
+  UserId: string;
+  Title: string;
+  Content: string;
+  Finished: string;
+  CreatedAt: string;
+  UpdatedAt: string;
 };
 
 export const App = () => {
+  // const initLiff = async () => {
+  //   try {
+  //     await liff.init({ liffId: import.meta.env.VITE_LIFF_ID });
+  //     if (!liff.isLoggedIn()) {
+  //       liff.login({});
+  //     }
+  //   } catch (e) {
+  //     console.log(e);
+  //     // throw new Error("認証に失敗しました。");
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   initLiff();
+  // }, []);
+
   const [todoList, setTodoList] = useState<Todo[]>([]);
 
   const apiClient = axios.create({
@@ -21,7 +48,6 @@ export const App = () => {
   const ref = useRef<HTMLInputElement | null>(null);
 
   const getTodoList = async () => {
-    // 初回Fetch
     const res = await apiClient.get<Todo[]>("/");
     setTodoList(res.data);
   };
@@ -76,7 +102,7 @@ export const App = () => {
             <ul className="items">
               {todoList.map((props, index) => (
                 <li key={index} className="item">
-                  {props.Todo}
+                  {props.Content}
                   {props.Id}
                   <label className="trash" onClick={() => deleteTodo(props.Id)}>
                     {TrashLogo}

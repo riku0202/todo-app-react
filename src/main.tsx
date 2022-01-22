@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
-import App from "./App";
-import "./index.css";
+import { App } from "./App";
 
 const theme = {
   colors: {
