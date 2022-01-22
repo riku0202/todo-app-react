@@ -48,24 +48,28 @@ export const App = () => {
   const ref = useRef<HTMLInputElement | null>(null);
 
   const getTodoList = async () => {
-    const res = await apiClient.get<Todo[]>("/");
-    setTodoList(res.data);
+    // const res = await apiClient.get<Todo[]>("/");
+    // setTodoList(res.data);
+    console.log("get");
   };
 
   const addTodo = async (todo: string) => {
-    const res = await apiClient.post<Todo[]>("/", {
-      todo,
-    });
-    setTodoList(res.data);
+    // const res = await apiClient.post<Todo[]>("/", {
+    //   todo,
+    // });
+    // setTodoList(res.data);
+
+    console.log("post");
   };
 
   const deleteTodo = async (id: string) => {
-    const res = await apiClient.delete<Todo[]>("/", {
-      params: {
-        id,
-      },
-    });
-    setTodoList(res.data);
+    // const res = await apiClient.delete<Todo[]>("/", {
+    //   params: {
+    //     id,
+    //   },
+    // });
+    // setTodoList(res.data);
+    console.log("delete");
   };
 
   const store = async () => {
