@@ -4,14 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { ReactLogo, TrashLogo } from "./Svg";
 
-// id VARCHAR(36) NOT NULL PRIMARY KEY,
-// user_id VARCHAR(36) NOT NULL,
-// title VARCHAR(200) NOT NULL,
-// content VARCHAR(200) NOT NULL,
-// finished BOOLEAN NOT NULL,
-// created_at TIMESTAMP NOT NULL,
-// updated_at TIMESTAMP NOT NULL
-
 type Todo = {
   Id: string;
   UserId: string;
@@ -23,21 +15,20 @@ type Todo = {
 };
 
 export const App = () => {
-  // const initLiff = async () => {
-  //   try {
-  //     await liff.init({ liffId: import.meta.env.VITE_LIFF_ID });
-  //     if (!liff.isLoggedIn()) {
-  //       liff.login({});
-  //     }
-  //   } catch (e) {
-  //     console.log(e);
-  //     // throw new Error("認証に失敗しました。");
-  //   }
-  // };
+  const initLiff = async () => {
+    try {
+      await liff.init({ liffId: import.meta.env.VITE_LIFF_ID });
+      if (!liff.isLoggedIn()) {
+        liff.login({});
+      } else console.log("login成功");
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
-  // useEffect(() => {
-  //   initLiff();
-  // }, []);
+  useEffect(() => {
+    initLiff();
+  }, []);
 
   const [todoList, setTodoList] = useState<Todo[]>([]);
 
