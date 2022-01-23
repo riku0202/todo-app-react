@@ -1,6 +1,7 @@
 import liff from "@line/liff/dist/lib";
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { ReactLogo, TrashLogo } from "./Svg";
 
@@ -8,13 +9,18 @@ type Todo = {
   Id: string;
   UserId: string;
   Title: string;
-  Content: string;
-  Finished: string;
+  description: string;
+  Finished: boolean;
   CreatedAt: string;
   UpdatedAt: string;
 };
 
 export const App = () => {
+  const [liffProfile, setLiffProfile] = useState<{
+    userId: string;
+    userName: string;
+  }>();
+
   const initLiff = async () => {
     try {
       await liff.init({ liffId: import.meta.env.VITE_LIFF_ID });
@@ -26,17 +32,28 @@ export const App = () => {
     }
   };
 
-  useEffect(() => {
-    initLiff();
-  }, []);
+  const [mockTodoList, setMockTodoList] = useState<Todo[]>([]);
 
-  const [todoList, setTodoList] = useState<Todo[]>([]);
+  // const [todoList, setTodoList] = useState<Todo[]>([]);
 
   const apiClient = axios.create({
     baseURL: "https://example.com/",
   });
 
-  const ref = useRef<HTMLInputElement | null>(null);
+  // const inputRef = useRef<HTMLInputElement | null>(null);
+
+  // const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+
+  const {
+    trigger,
+    getValues,
+    register,
+    reset,
+    formState: { errors },
+  } = useForm<{
+    title: string;
+    description: string;
+  }>();
 
   const getTodoList = async () => {
     // const res = await apiClient.get<Todo[]>("/");
@@ -44,13 +61,14 @@ export const App = () => {
     console.log("get");
   };
 
-  const addTodo = async (todo: string) => {
+  const addTodo = async (todo: Todo) => {
     // const res = await apiClient.post<Todo[]>("/", {
     //   todo,
     // });
     // setTodoList(res.data);
 
-    console.log("post");
+    // Test
+    setMockTodoList(mockTodoList.concat([todo]));
   };
 
   const deleteTodo = async (id: string) => {
@@ -60,55 +78,128 @@ export const App = () => {
     //   },
     // });
     // setTodoList(res.data);
-    console.log("delete");
+
+    // Test
+    setMockTodoList(mockTodoList.filter((todo) => todo.Id !== id));
   };
 
   const store = async () => {
-    if (ref.current) {
-      await addTodo(ref.current.value);
-      ref.current.value = "";
+    const triggerResult = await trigger();
+    if (!triggerResult) return;
+
+    const user = await liff.getProfile();
+
+    // Test
+    if (errors) {
+      const data: Todo = {
+        Id: Math.random().toString(32).substring(2),
+        UserId: user.userId,
+        Title: getValues("title"),
+        description: getValues("description"),
+        Finished: false,
+        CreatedAt: Date.now().toString(),
+        UpdatedAt: Date.now().toString(),
+      };
+
+      await addTodo(data);
+      reset({
+        title: "",
+        description: "",
+      });
     }
   };
 
   useEffect(() => {
+    (async () => {
+      await initLiff();
+
+      const { displayName, userId } = await liff.getProfile();
+
+      setLiffProfile({
+        userId: userId,
+        userName: displayName,
+      });
+    })();
+
     getTodoList();
   }, []);
 
   return (
-    <>
-      <Style>
-        <nav className="title">
+    <Style>
+      <nav className="title">
+        <div className="left-container">
           {ReactLogo}
-          <h2 className="name">Todo List</h2>
-        </nav>
-        <div className="contents">
-          <form className="add">
+          <h1 className="name">Todo List</h1>
+        </div>
+        <h1 className="right-container">Welcome to {liffProfile?.userName}</h1>
+      </nav>
+      <div className="contents">
+        <div className="add">
+          <div className="forms">
             <input
               className="add-form"
               type="text"
-              ref={ref}
-              placeholder="TODO"
+              placeholder="Title"
+              {...register("title", {
+                required: true,
+              })}
             />
-            <button className="add-button" onClick={store}>
-              ADD
-            </button>
-          </form>
-          {todoList && (
-            <ul className="items">
-              {todoList.map((props, index) => (
-                <li key={index} className="item">
-                  {props.Content}
-                  {props.Id}
-                  <label className="trash" onClick={() => deleteTodo(props.Id)}>
-                    {TrashLogo}
-                  </label>
-                </li>
+            {errors.title && <p className="error">必須項目です。</p>}
+            <textarea
+              className="add-textarea"
+              placeholder="Description"
+              {...register("description")}
+            />
+          </div>
+          <button className="add-button" type="button" onClick={store}>
+            ADD
+          </button>
+        </div>
+        {mockTodoList && (
+          <>
+            <ul className="not-finished">
+              {mockTodoList.map((props, index) => (
+                <>
+                  {!props.Finished && (
+                    <li key={index} className="item">
+                      <div className="content">
+                        <p>{props.Title}</p>
+                        <p>{props.description}</p>
+                      </div>
+                      <label
+                        className="trash"
+                        onClick={() => deleteTodo(props.Id)}
+                      >
+                        {TrashLogo}
+                      </label>
+                    </li>
+                  )}
+                </>
               ))}
             </ul>
-          )}
-        </div>
-      </Style>
-    </>
+            <p className="finished-title">Finished</p>
+            <ul className="not-finished">
+              {mockTodoList.map((props, index) => (
+                <>
+                  {props.Finished && (
+                    <li key={index} className="item">
+                      {props.Title}
+                      {props.Id}
+                      <label
+                        className="trash"
+                        onClick={() => deleteTodo(props.Id)}
+                      >
+                        {TrashLogo}
+                      </label>
+                    </li>
+                  )}
+                </>
+              ))}
+            </ul>
+          </>
+        )}
+      </div>
+    </Style>
   );
 };
 
@@ -119,16 +210,28 @@ const Style = styled.main`
   .title {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 15px;
-    padding: 0 0 0 20px;
+    padding: 15px 20px;
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 
-    svg {
-      height: 40px;
-      fill: ${({ theme }) => theme.colors.button};
+    .left-container {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+
+      svg {
+        height: 40px;
+        fill: ${({ theme }) => theme.colors.button};
+      }
+
+      .name {
+        color: ${({ theme }) => theme.colors.font};
+        font-size: 30px;
+      }
     }
 
-    .name {
+    .right-container {
       color: ${({ theme }) => theme.colors.font};
       font-size: 30px;
     }
@@ -136,31 +239,51 @@ const Style = styled.main`
 
   .contents {
     margin: 30px 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
     color: ${({ theme }) => theme.colors.font};
 
     .add {
       display: flex;
-      gap: 20px;
+      gap: 15px;
       width: 100%;
 
-      .add-form {
-        line-height: 17px;
-        padding: 10px;
-        font-size: 15px;
-        color: ${({ theme }) => theme.colors.font};
+      .forms {
         width: 100%;
-        background-color: ${({ theme }) => theme.colors.form};
-        border-radius: 7px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        .error {
+          color: ${({ theme }) => theme.colors.warning};
+          font-size: 15px;
+        }
+
+        .add-form {
+          color: ${({ theme }) => theme.colors.font};
+          padding: 10px;
+          font-size: 15px;
+          background-color: ${({ theme }) => theme.colors.form};
+          border-radius: 7px;
+        }
+
+        .add-textarea {
+          color: ${({ theme }) => theme.colors.font};
+          height: 56px;
+          padding: 10px;
+          font-size: 15px;
+          line-height: 18px;
+          background-color: ${({ theme }) => theme.colors.form};
+          border-radius: 7px;
+        }
       }
 
       .add-button {
         background-color: ${({ theme }) => theme.colors.button};
         font-size: 13px;
-        padding: 10px;
+        padding: 15px;
         color: ${({ theme }) => theme.colors.font};
-        display: flex;
-        justify-content: center;
-        align-items: center;
         font-weight: bold;
         border-radius: 7px;
 
@@ -170,7 +293,45 @@ const Style = styled.main`
       }
     }
 
-    .items {
+    .not-finished {
+      display: flex;
+      flex-direction: column;
+      font-size: 15px;
+      line-height: 18px;
+      gap: 10px;
+      list-style: none;
+
+      .item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 7px;
+        padding: 10px;
+        background-color: ${({ theme }) => theme.colors.form};
+
+        .content {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+        }
+
+        .trash {
+          cursor: pointer;
+          svg {
+            height: 20px;
+            fill: ${({ theme }) => theme.colors.font};
+            :hover {
+              fill: ${({ theme }) => theme.colors.warning};
+            }
+          }
+        }
+      }
+    }
+
+    .finished-title {
+    }
+
+    .not-finished {
       display: flex;
       flex-direction: column;
       font-size: 15px;
@@ -193,7 +354,7 @@ const Style = styled.main`
             height: 20px;
             fill: ${({ theme }) => theme.colors.font};
             :hover {
-              fill: ${({ theme }) => theme.colors.trash};
+              fill: ${({ theme }) => theme.colors.warning};
             }
           }
         }

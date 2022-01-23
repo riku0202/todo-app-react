@@ -10,7 +10,7 @@ const theme = {
     button: "rgb(8, 126, 164)",
     form: "rgb(52, 58, 70)",
     hover: "rgba(8, 126, 164, 0.8)",
-    trash: "#ff0000",
+    warning: "#ff0000",
   },
 };
 
@@ -26,6 +26,11 @@ export const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
     letter-spacing: 1px;
     overflow-x:hidden;
+  }
+
+  h1,p,ul,li{
+    margin: 0;
+    padding: 0;
   }
 
   a{
@@ -45,6 +50,15 @@ export const GlobalStyle = createGlobalStyle`
           outline: none;
           appearance: none;
   }
+
+textarea {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    resize: none;
+    border: 0;
+    outline: none;
+}
 
 * {
   box-sizing: border-box;

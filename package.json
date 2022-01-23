@@ -6,7 +6,7 @@
   },
   "scripts": {
     "start": "serve -s build",
-    "dev": "vite",
+    "dev": "vite --https",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "heroku-postbuild": "npm run build"
@@ -16,8 +16,10 @@
     "axios": "^0.25.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-hook-form": "^7.25.0",
     "serve": "^13.0.2",
-    "styled-components": "^5.3.3"
+    "styled-components": "^5.3.3",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",
