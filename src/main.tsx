@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { App } from "./App";
+import { LiffProvider } from "./hook/useLiff";
 
 const theme = {
   colors: {
@@ -70,7 +71,9 @@ ReactDOM.render(
     <React.StrictMode>
       <ThemeProvider theme={theme}>
         <GlobalStyle />
-        <App />
+        <LiffProvider>
+          <App />
+        </LiffProvider>
       </ThemeProvider>
     </React.StrictMode>
   </>,

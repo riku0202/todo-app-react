@@ -3,46 +3,24 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
+import { useLiff } from "./hook/useLiff";
 import { ReactLogo, TrashLogo } from "./Svg";
-
-type Todo = {
-  Id: string;
-  UserId: string;
-  Title: string;
-  description: string;
-  Finished: boolean;
-  CreatedAt: string;
-  UpdatedAt: string;
-};
+import { Todo } from "./types/todo";
 
 export const App = () => {
-  const [liffProfile, setLiffProfile] = useState<{
-    userId: string;
-    userName: string;
-  }>();
-
-  const initLiff = async () => {
-    try {
-      await liff.init({ liffId: import.meta.env.VITE_LIFF_ID });
-      if (!liff.isLoggedIn()) {
-        liff.login({});
-      } else console.log("login成功");
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  const liffProfile = useLiff();
 
   const [mockTodoList, setMockTodoList] = useState<Todo[]>([]);
 
   // const [todoList, setTodoList] = useState<Todo[]>([]);
 
+  const liffUser = useLiff();
+
+  console.log(liffUser);
+
   const apiClient = axios.create({
     baseURL: "https://example.com/",
   });
-
-  // const inputRef = useRef<HTMLInputElement | null>(null);
-
-  // const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   const {
     trigger,
@@ -95,7 +73,7 @@ export const App = () => {
         Id: Math.random().toString(32).substring(2),
         UserId: user.userId,
         Title: getValues("title"),
-        description: getValues("description"),
+        Description: getValues("description"),
         Finished: false,
         CreatedAt: Date.now().toString(),
         UpdatedAt: Date.now().toString(),
@@ -108,21 +86,6 @@ export const App = () => {
       });
     }
   };
-
-  useEffect(() => {
-    (async () => {
-      await initLiff();
-
-      const { displayName, userId } = await liff.getProfile();
-
-      setLiffProfile({
-        userId: userId,
-        userName: displayName,
-      });
-    })();
-
-    getTodoList();
-  }, []);
 
   return (
     <Style>
@@ -164,7 +127,7 @@ export const App = () => {
                     <li key={index} className="item">
                       <div className="content">
                         <p>{props.Title}</p>
-                        <p>{props.description}</p>
+                        <p>{props.Description}</p>
                       </div>
                       <label
                         className="trash"
