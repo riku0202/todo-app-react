@@ -1,10 +1,13 @@
 import liff from "@line/liff/dist/lib";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
+import { Button } from "./components/Button";
+import { Forms } from "./components/Forms";
+import { Header } from "./components/Header";
 import { useLiff } from "./hook/useLiff";
-import { ReactLogo, TrashLogo } from "./Svg";
+import { TrashLogo } from "./Svg";
 import { Todo } from "./types/todo";
 
 export const App = () => {
@@ -89,34 +92,11 @@ export const App = () => {
 
   return (
     <Style>
-      <nav className="title">
-        <div className="left-container">
-          {ReactLogo}
-          <h1 className="name">Todo List</h1>
-        </div>
-        <h1 className="right-container">Welcome to {liffProfile?.userName}</h1>
-      </nav>
+      <Header userName={liffProfile.userName} />
       <div className="contents">
         <div className="add">
-          <div className="forms">
-            <input
-              className="add-form"
-              type="text"
-              placeholder="Title"
-              {...register("title", {
-                required: true,
-              })}
-            />
-            {errors.title && <p className="error">必須項目です。</p>}
-            <textarea
-              className="add-textarea"
-              placeholder="Description"
-              {...register("description")}
-            />
-          </div>
-          <button className="add-button" type="button" onClick={store}>
-            ADD
-          </button>
+          <Forms register={register} errors={errors} />
+          <Button onClick={store}>ADD</Button>
         </div>
         {mockTodoList && (
           <>
@@ -170,36 +150,6 @@ const Style = styled.main`
   height: 100vh;
   background-color: ${({ theme }) => theme.colors.background};
 
-  .title {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 15px;
-    padding: 15px 20px;
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-
-    .left-container {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-
-      svg {
-        height: 40px;
-        fill: ${({ theme }) => theme.colors.button};
-      }
-
-      .name {
-        color: ${({ theme }) => theme.colors.font};
-        font-size: 30px;
-      }
-    }
-
-    .right-container {
-      color: ${({ theme }) => theme.colors.font};
-      font-size: 30px;
-    }
-  }
-
   .contents {
     margin: 30px 0 0;
     display: flex;
@@ -211,49 +161,6 @@ const Style = styled.main`
       display: flex;
       gap: 15px;
       width: 100%;
-
-      .forms {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-
-        .error {
-          color: ${({ theme }) => theme.colors.warning};
-          font-size: 15px;
-        }
-
-        .add-form {
-          color: ${({ theme }) => theme.colors.font};
-          padding: 10px;
-          font-size: 15px;
-          background-color: ${({ theme }) => theme.colors.form};
-          border-radius: 7px;
-        }
-
-        .add-textarea {
-          color: ${({ theme }) => theme.colors.font};
-          height: 56px;
-          padding: 10px;
-          font-size: 15px;
-          line-height: 18px;
-          background-color: ${({ theme }) => theme.colors.form};
-          border-radius: 7px;
-        }
-      }
-
-      .add-button {
-        background-color: ${({ theme }) => theme.colors.button};
-        font-size: 13px;
-        padding: 15px;
-        color: ${({ theme }) => theme.colors.font};
-        font-weight: bold;
-        border-radius: 7px;
-
-        :hover {
-          background-color: ${({ theme }) => theme.colors.hover};
-        }
-      }
     }
 
     .not-finished {
