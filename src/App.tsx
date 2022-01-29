@@ -3,11 +3,13 @@ import axios from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
+import { Background as OriginBackground } from "./components/Background";
 import { Button } from "./components/Button";
 import { Forms } from "./components/Forms";
 import { Header } from "./components/Header";
+import { Layout } from "./components/Layout";
+import { Task } from "./components/Task";
 import { useLiff } from "./hook/useLiff";
-import { TrashLogo } from "./Svg";
 import { Todo } from "./types/todo";
 
 export const App = () => {
@@ -91,60 +93,125 @@ export const App = () => {
   };
 
   return (
-    <Style>
-      <Header userName={liffProfile.userName} />
-      <div className="contents">
-        <div className="add">
+    <Layout>
+      <Background>
+        <Header userName={liffProfile.userName} />
+        <div>
           <Forms register={register} errors={errors} />
           <Button onClick={store}>ADD</Button>
         </div>
-        {mockTodoList && (
-          <>
-            <ul className="not-finished">
-              {mockTodoList.map((props, index) => (
-                <>
-                  {!props.Finished && (
-                    <li key={index} className="item">
-                      <div className="content">
-                        <p>{props.Title}</p>
-                        <p>{props.Description}</p>
-                      </div>
-                      <label
-                        className="trash"
-                        onClick={() => deleteTodo(props.Id)}
-                      >
-                        {TrashLogo}
-                      </label>
-                    </li>
-                  )}
-                </>
-              ))}
-            </ul>
-            <p className="finished-title">Finished</p>
-            <ul className="not-finished">
-              {mockTodoList.map((props, index) => (
-                <>
-                  {props.Finished && (
-                    <li key={index} className="item">
-                      {props.Title}
-                      {props.Id}
-                      <label
-                        className="trash"
-                        onClick={() => deleteTodo(props.Id)}
-                      >
-                        {TrashLogo}
-                      </label>
-                    </li>
-                  )}
-                </>
-              ))}
-            </ul>
-          </>
-        )}
-      </div>
-    </Style>
+        <div>
+          <h2>Task</h2>
+          <ul>
+            <Task
+              onClick={() => console.log("hello")}
+              title="あいうえお"
+              description="あいうえおかきくけこ"
+              isFinished={false}
+            />
+            <Task
+              onClick={() => console.log("hello")}
+              title="あいうえお"
+              description="あいうえおかきくけこ"
+              isFinished={false}
+            />
+            <Task
+              onClick={() => console.log("hello")}
+              title="あいうえお"
+              description="あいうえおかきくけこ"
+              isFinished={true}
+            />
+          </ul>
+        </div>
+
+        {/* {mockTodoList && (
+        <>
+          <ul className="not-finished">
+            {mockTodoList.map((props, index) => (
+              <>
+                {!props.Finished && (
+                  <li key={index} className="item">
+                    <div className="content">
+                      <p>{props.Title}</p>
+                      <p>{props.Description}</p>
+                    </div>
+                    <label
+                      className="trash"
+                      onClick={() => deleteTodo(props.Id)}
+                    >
+                      {TrashLogo}
+                    </label>
+                  </li>
+                )}
+              </>
+            ))}
+          </ul>
+          <p className="finished-title">Finished</p>
+          <ul className="not-finished">
+            {mockTodoList.map((props, index) => (
+              <>
+                {props.Finished && (
+                  <li key={index} className="item">
+                    {props.Title}
+                    {props.Id}
+                    <label
+                      className="trash"
+                      onClick={() => deleteTodo(props.Id)}
+                    >
+                      {TrashLogo}
+                    </label>
+                  </li>
+                )}
+              </>
+            ))}
+          </ul>
+        </>
+      )} */}
+        <h2>Finished Task</h2>
+      </Background>
+    </Layout>
   );
 };
+
+// const Layout = styled(OriginLayout)`
+//   div {
+//     display: flex;
+//     gap: 10px;
+//   }
+
+//   ul {
+//     display: flex;
+//     flex-direction: column;
+//     gap: 10px;
+//   }
+
+//   h2 {
+//     color: ${({ theme }) => theme.colors.font};
+//   }
+// `;
+
+const Background = styled(OriginBackground)`
+  h2 {
+    color: ${({ theme }) => theme.colors.font};
+  }
+
+  & > div:nth-child(2) {
+    display: flex;
+    gap: 10px;
+  }
+
+  & > div:nth-child(3) {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    ul {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+  }
+`;
 
 const Style = styled.main`
   height: 100vh;

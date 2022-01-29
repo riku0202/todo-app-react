@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { App } from "./App";
@@ -6,7 +6,8 @@ import { LiffProvider } from "./hook/useLiff";
 
 const theme = {
   colors: {
-    background: "rgb(35, 39, 47)",
+    background: "rgba(16, 18, 27 ,0.4)",
+    backgroundDark: "rgba(16, 18, 27 ,0.7)",
     font: "#ffffff",
     button: "rgb(8, 126, 164)",
     form: "rgb(52, 58, 70)",
@@ -27,12 +28,25 @@ export const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
     letter-spacing: 1px;
     overflow-x:hidden;
+    line-height: 1;
   }
 
-  h1,p,ul,li{
+  h1,h2,p,ul,li{
     margin: 0;
     padding: 0;
   }
+
+  h1{
+    font-size:25px 
+  }
+
+  h2{
+    font-size:17px; 
+  }
+
+ul {
+  list-style: none;
+}
 
   a{
     text-decoration: none;
