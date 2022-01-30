@@ -199,7 +199,14 @@ const Background = styled(OriginBackground)`
 
   & > div:nth-child(2) {
     display: flex;
+    flex-direction: row;
     gap: 10px;
+
+    @media screen and (max-width: 959px) {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
   }
 
   & > div:nth-child(3),

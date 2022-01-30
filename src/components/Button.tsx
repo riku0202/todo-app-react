@@ -18,7 +18,8 @@ export const Button = ({
 const Style = styled.button`
   background-color: transparent;
   font-size: 13px;
-  padding: 30px;
+  padding: 0 30px;
+  min-height: 56px;
   color: ${({ theme }) => theme.colors.button};
   font-weight: bold;
   border-radius: 7px;

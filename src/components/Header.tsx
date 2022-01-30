@@ -22,6 +22,15 @@ const Style = styled.nav`
   padding: 15px 20px;
   color: ${({ theme }) => theme.colors.font};
 
+  @media screen and (max-width: 959px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    padding: 10px 15px;
+  }
+
   div {
     display: flex;
     align-items: center;

@@ -91,6 +91,10 @@ const Style = styled.button<{ isFinished: boolean }>`
       :hover {
         fill: ${({ theme }) => theme.colors.warning};
       }
+
+      @media screen and (max-width: 959px) {
+        height: 35px;
+      }
     }
   }
 

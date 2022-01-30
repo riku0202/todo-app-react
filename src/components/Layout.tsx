@@ -47,12 +47,8 @@ const Style = styled.main`
     height: 100vh;
     background-color: transparent;
 
-    @media screen and (max-width: 640px) {
+    @media screen and (max-width: 959px) {
       padding: 10px;
-    }
-
-    @media (min-width: 640px) {
-      padding: 24px;
     }
   }
 `;
