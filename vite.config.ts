@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   build: {
     //この部分を追加
-    outDir: "./build",
+    outDir: "./dist",
   },
   server: {
     host: "0.0.0.0",
