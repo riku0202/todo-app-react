@@ -29,7 +29,7 @@ const Style = styled.nav`
 
     svg {
       height: 40px;
-      fill: ${({ theme }) => theme.colors.button};
+      fill: ${({ theme }) => theme.colors.logo};
     }
   }
 `;

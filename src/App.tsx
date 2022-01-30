@@ -10,6 +10,7 @@ import { Header } from "./components/Header";
 import { Layout } from "./components/Layout";
 import { Task } from "./components/Task";
 import { useLiff } from "./hook/useLiff";
+import { TrashLogo } from "./Svg";
 import { Todo } from "./types/todo";
 
 export const App = () => {
@@ -66,6 +67,38 @@ export const App = () => {
     setMockTodoList(mockTodoList.filter((todo) => todo.Id !== id));
   };
 
+  const finishTodo = async (id: string) => {
+    // const res = await apiClient.put<Todo[]>("/", {
+    //   params: {
+    //     id,
+    //   },
+    // });
+    // setTodoList(res.data);
+
+    // Test
+    setMockTodoList(
+      mockTodoList.map((todo) =>
+        todo.Id === id ? { ...todo, isFinished: true } : todo
+      )
+    );
+  };
+
+  const revertFinishTodo = async (id: string) => {
+    // const res = await apiClient.put<Todo[]>("/", {
+    //   params: {
+    //     id,
+    //   },
+    // });
+    // setTodoList(res.data);
+
+    // Test
+    setMockTodoList(
+      mockTodoList.map((todo) =>
+        todo.Id === id ? { ...todo, isFinished: false } : todo
+      )
+    );
+  };
+
   const store = async () => {
     const triggerResult = await trigger();
     if (!triggerResult) return;
@@ -79,7 +112,7 @@ export const App = () => {
         UserId: user.userId,
         Title: getValues("title"),
         Description: getValues("description"),
-        Finished: false,
+        isFinished: false,
         CreatedAt: Date.now().toString(),
         UpdatedAt: Date.now().toString(),
       };
@@ -103,92 +136,61 @@ export const App = () => {
         <div>
           <h2>Task</h2>
           <ul>
-            <Task
-              onClick={() => console.log("hello")}
-              title="あいうえお"
-              description="あいうえおかきくけこ"
-              isFinished={false}
-            />
-            <Task
-              onClick={() => console.log("hello")}
-              title="あいうえお"
-              description="あいうえおかきくけこ"
-              isFinished={false}
-            />
-            <Task
-              onClick={() => console.log("hello")}
-              title="あいうえお"
-              description="あいうえおかきくけこ"
-              isFinished={true}
-            />
+            {mockTodoList.length ? (
+              <>
+                {mockTodoList.map(
+                  ({ Id, Title, Description, isFinished }, index) => (
+                    <>
+                      {!isFinished && (
+                        <Task
+                          key={index}
+                          onClick={() => finishTodo(Id)}
+                          onClickTrash={() => deleteTodo(Id)}
+                          title={Title}
+                          description={Description}
+                          isFinished={false}
+                        />
+                      )}
+                    </>
+                  )
+                )}
+              </>
+            ) : (
+              <li className="nothing">Nothing</li>
+            )}
           </ul>
         </div>
-
-        {/* {mockTodoList && (
-        <>
-          <ul className="not-finished">
-            {mockTodoList.map((props, index) => (
+        <div>
+          <h2>Finished Task</h2>
+          <ul>
+            {mockTodoList.length ? (
               <>
-                {!props.Finished && (
-                  <li key={index} className="item">
-                    <div className="content">
-                      <p>{props.Title}</p>
-                      <p>{props.Description}</p>
-                    </div>
-                    <label
-                      className="trash"
-                      onClick={() => deleteTodo(props.Id)}
-                    >
-                      {TrashLogo}
-                    </label>
-                  </li>
+                {mockTodoList.map(
+                  ({ Id, Title, Description, isFinished }, index) => (
+                    <>
+                      {isFinished && (
+                        <Task
+                          key={index}
+                          onClick={() => revertFinishTodo(Id)}
+                          onClickTrash={() => deleteTodo(Id)}
+                          title={Title}
+                          description={Description}
+                          isFinished={true}
+                        />
+                      )}
+                    </>
+                  )
                 )}
               </>
-            ))}
+            ) : (
+              <li className="nothing">Nothing</li>
+            )}
           </ul>
-          <p className="finished-title">Finished</p>
-          <ul className="not-finished">
-            {mockTodoList.map((props, index) => (
-              <>
-                {props.Finished && (
-                  <li key={index} className="item">
-                    {props.Title}
-                    {props.Id}
-                    <label
-                      className="trash"
-                      onClick={() => deleteTodo(props.Id)}
-                    >
-                      {TrashLogo}
-                    </label>
-                  </li>
-                )}
-              </>
-            ))}
-          </ul>
-        </>
-      )} */}
-        <h2>Finished Task</h2>
+        </div>
       </Background>
     </Layout>
   );
 };
-
-// const Layout = styled(OriginLayout)`
-//   div {
-//     display: flex;
-//     gap: 10px;
-//   }
-
-//   ul {
-//     display: flex;
-//     flex-direction: column;
-//     gap: 10px;
-//   }
-
-//   h2 {
-//     color: ${({ theme }) => theme.colors.font};
-//   }
-// `;
 
 const Background = styled(OriginBackground)`
   h2 {
@@ -200,15 +202,22 @@ const Background = styled(OriginBackground)`
     gap: 10px;
   }
 
-  & > div:nth-child(3) {
+  & > div:nth-child(3),
+  & > div:nth-child(4) {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 15px;
 
     ul {
       display: flex;
       flex-direction: column;
       gap: 10px;
+
+      .nothing {
+        font-size: 25px;
+        font-weight: bold;
+        color: ${({ theme }) => theme.colors.background};
+      }
     }
   }
 `;

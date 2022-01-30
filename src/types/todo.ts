@@ -3,7 +3,7 @@ export type Todo = {
   UserId: string;
   Title: string;
   Description: string;
-  Finished: boolean;
+  isFinished: boolean;
   CreatedAt: string;
   UpdatedAt: string;
 };

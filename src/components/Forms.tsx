@@ -45,7 +45,7 @@ const Style = styled.div`
     color: ${({ theme }) => theme.colors.font};
     padding: 10px 15px;
     font-size: 15px;
-    background-color: ${({ theme }) => theme.colors.form};
+    background-color: ${({ theme }) => theme.colors.background};
     border-radius: 7px;
   }
 
@@ -55,7 +55,7 @@ const Style = styled.div`
     padding: 10px 15px;
     font-size: 15px;
     line-height: 18px;
-    background-color: ${({ theme }) => theme.colors.form};
+    background-color: ${({ theme }) => theme.colors.background};
     border-radius: 7px;
   }
 `;

@@ -7,11 +7,13 @@ import { LiffProvider } from "./hook/useLiff";
 const theme = {
   colors: {
     background: "rgba(16, 18, 27 ,0.4)",
+    backgroundLight: "rgba(146, 151, 179, 0.2);",
     backgroundDark: "rgba(16, 18, 27 ,0.7)",
-    font: "#ffffff",
-    button: "rgb(8, 126, 164)",
+    font: " #ffffff",
+    button: "rgba(249, 250 ,251, 0.55)",
+    hover: "rgba(249, 250 ,251, 0.55)",
+    logo: "rgb(8, 126, 164)",
     form: "rgb(52, 58, 70)",
-    hover: "rgba(8, 126, 164, 0.8)",
     warning: "#ff0000",
   },
 };
@@ -77,6 +79,7 @@ textarea {
 
 * {
   box-sizing: border-box;
+  line-height: 1;
 }
 `;
 

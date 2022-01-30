@@ -16,14 +16,16 @@ export const Button = ({
 };
 
 const Style = styled.button`
-  background-color: ${({ theme }) => theme.colors.button};
+  background-color: transparent;
   font-size: 13px;
   padding: 30px;
-  color: ${({ theme }) => theme.colors.font};
+  color: ${({ theme }) => theme.colors.button};
   font-weight: bold;
   border-radius: 7px;
+  border: 1px solid ${({ theme }) => theme.colors.button};
+  background-color: ${({ theme }) => theme.colors.backgroundLight};
 
   :hover {
-    background-color: ${({ theme }) => theme.colors.hover};
+    background-color: ${({ theme }) => theme.colors.background};
   }
 `;
