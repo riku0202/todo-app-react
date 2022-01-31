@@ -24,8 +24,6 @@ export const LiffProvider = ({
 }): JSX.Element => {
   const [liffProfile, setLiffProfile] = useState<LiffUser | null>(null);
 
-  console.log("logged in");
-
   useEffect(() => {
     (async () => {
       try {

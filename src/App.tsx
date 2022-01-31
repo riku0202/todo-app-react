@@ -8,13 +8,16 @@ import { Button } from "./components/Button";
 import { Forms } from "./components/Forms";
 import { Header } from "./components/Header";
 import { Layout } from "./components/Layout";
+import { MUISwitchButton } from "./components/MUISwitchButton";
 import { Task } from "./components/Task";
 import { useLiff } from "./hook/useLiff";
-import { TrashLogo } from "./Svg";
+import { useTheme } from "./hook/useTheme";
 import { Todo } from "./types/todo";
 
 export const App = () => {
   const liffProfile = useLiff();
+
+  const { theme, setTheme } = useTheme();
 
   const [mockTodoList, setMockTodoList] = useState<Todo[]>([]);
 
@@ -128,6 +131,10 @@ export const App = () => {
   return (
     <Layout>
       <Background>
+        <MUISwitchButton
+          checked={theme === "dark"}
+          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+        />
         <Header userName={liffProfile.userName} />
         <div>
           <Forms register={register} errors={errors} />

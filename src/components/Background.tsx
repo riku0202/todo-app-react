@@ -18,12 +18,9 @@ const Style = styled.div`
   gap: 40px;
   background-color: ${({ theme }) => theme.colors.background};
   border-radius: 7px;
+  padding: 24px 48px;
 
-  @media screen and (max-width: 640px) {
+  @media screen and (max-width: 959px) {
     padding: 5px 20px;
-  }
-
-  @media (min-width: 640px) {
-    padding: 24px 48px;
   }
 `;

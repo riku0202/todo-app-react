@@ -44,11 +44,12 @@ const Style = styled.main`
     display: flex;
     position: relative;
     z-index: 1;
-    height: 100vh;
     background-color: transparent;
 
+    padding: 40px;
+
     @media screen and (max-width: 959px) {
-      padding: 10px;
+      padding: 20px;
     }
   }
 `;

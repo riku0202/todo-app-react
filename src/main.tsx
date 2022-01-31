@@ -1,22 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { createGlobalStyle, ThemeProvider } from "styled-components";
+import { createGlobalStyle } from "styled-components";
 import { App } from "./App";
 import { LiffProvider } from "./hook/useLiff";
-
-const theme = {
-  colors: {
-    background: "rgba(16, 18, 27 ,0.4)",
-    backgroundLight: "rgba(146, 151, 179, 0.2);",
-    backgroundDark: "rgba(16, 18, 27 ,0.7)",
-    font: " #ffffff",
-    button: "rgba(249, 250 ,251, 0.55)",
-    hover: "rgba(249, 250 ,251, 0.55)",
-    logo: "rgb(8, 126, 164)",
-    form: "rgb(52, 58, 70)",
-    warning: "#ff0000",
-  },
-};
+import { ThemeProvider } from "./hook/useTheme";
 
 export const GlobalStyle = createGlobalStyle`
   html,body {
@@ -86,8 +73,8 @@ textarea {
 ReactDOM.render(
   <>
     <React.StrictMode>
-      <ThemeProvider theme={theme}>
-        <GlobalStyle />
+      <GlobalStyle />
+      <ThemeProvider>
         <LiffProvider>
           <App />
         </LiffProvider>
