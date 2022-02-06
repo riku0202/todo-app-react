@@ -33,7 +33,7 @@ const darkTheme = {
 
 const whiteTheme = {
   colors: {
-    background: "rgba(16, 18, 27 ,0.4)",
+    background: "rgba(16, 18, 27 ,0.4);",
     backgroundLight: "rgba(146, 151, 179, 0.2);",
     backgroundDark: "rgba(16, 18, 27 ,0.7)",
     font: " #ffffff",

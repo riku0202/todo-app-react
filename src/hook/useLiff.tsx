@@ -39,6 +39,7 @@ export const LiffProvider = ({
       }
 
       const { displayName, userId } = await liff.getProfile();
+      console.log(userId);
 
       setLiffProfile({
         userId: userId,

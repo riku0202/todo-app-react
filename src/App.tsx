@@ -131,11 +131,15 @@ export const App = () => {
   return (
     <Layout>
       <Background>
-        <MUISwitchButton
-          checked={theme === "dark"}
-          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+        <Header
+          userName={liffProfile.userName}
+          button={
+            <MUISwitchButton
+              checked={theme === "dark"}
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            />
+          }
         />
-        <Header userName={liffProfile.userName} />
         <div>
           <Forms register={register} errors={errors} />
           <Button onClick={store}>ADD</Button>

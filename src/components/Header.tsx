@@ -2,12 +2,19 @@ import React from "react";
 import styled from "styled-components";
 import { ReactLogo } from "../Svg";
 
-export const Header = ({ userName }: { userName: string }): JSX.Element => {
+export const Header = ({
+  userName,
+  button,
+}: {
+  userName: string;
+  button: JSX.Element;
+}): JSX.Element => {
   return (
     <Style>
       <div>
         {ReactLogo}
         <h1>Todo List</h1>
+        {button}
       </div>
       <h1>Welcome to {userName}</h1>
     </Style>
